@@ -11,8 +11,9 @@
 
 @property (nonatomic) NSString *name;
 @property (nonatomic) NSString *bio;
-@property (nonatomic) NSString *imageURL;
+@property (nonatomic) NSArray *image;
+@property (nonatomic) NSString *uri;
 
-+ (SAArtist *) artistOfName: (NSString *) name bio: (NSString *) bio url: (NSString *) url;
++ (SAArtist *) artistOfName: (NSString *) name bio: (NSString *) bio image: (NSArray *) image uri: (NSString *) number;
 
 @end

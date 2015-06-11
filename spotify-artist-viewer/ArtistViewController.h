@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+@class SAArtist;
 
 @interface ArtistViewController : UIViewController
+
+@property (strong, nonatomic) SAArtist *artist;
 
 @end

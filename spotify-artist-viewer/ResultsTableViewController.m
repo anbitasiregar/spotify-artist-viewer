@@ -9,6 +9,7 @@
 #import "ResultsTableViewController.h"
 #import "SARequestManager.h"
 #import "SAArtist.h"
+#import "ArtistViewController.h"
 
 @interface ResultsTableViewController ()
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
@@ -22,19 +23,16 @@
 @synthesize artistArray;
 
 - (void)viewDidLoad {
-    
-    [self handleSearch:self.searchBar];
-    
     [super viewDidLoad];
-    artistArray = [NSArray arrayWithObjects:
-                   [SAArtist artistOfName:@"test1" bio:@"test1" url:@"test1"],
-                   [SAArtist artistOfName:@"test2" bio:@"test2" url:@"test2"],
-                   [SAArtist artistOfName:@"test3" bio:@"test3" url:@"test3"], nil];
-    
-    [self.tableView reloadData];
+    [self.searchBar setBackgroundColor:[UIColor blackColor]];
 }
 
 #pragma mark - search bar methods
+
+-(void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
+    [self handleSearch:searchBar];
+}
+
 - (void) searchBarSearchButtonClicked: (UISearchBar *) searchBar {
     [self handleSearch:searchBar];
 }
@@ -46,7 +44,7 @@
 - (void) handleSearch: (UISearchBar *) searchBar {
     NSLog(@"User searched for %@", searchBar.text);
     NSString *queryString = searchBar.text;
-    [searchBar resignFirstResponder];
+    //[searchBar resignFirstResponder];
     
     [[SARequestManager sharedManager] getArtistsWithQuery:queryString success:^(NSArray *artists) {
             artistArray = artists;
@@ -60,14 +58,6 @@
 
 #pragma mark - Table view data source
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
@@ -78,35 +68,34 @@
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UITableViewCell *cellView = nil;
     NSString *TableViewCellIdentifier = @"ArtistCells";
 
-    if (!cellView) {
-        cellView = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
-                                          reuseIdentifier:TableViewCellIdentifier];
-    }
+    UITableViewCell *cellView = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+                                                       reuseIdentifier:TableViewCellIdentifier];
     
     if (self.artistArray.count > 0) {
         SAArtist *artist = [self.artistArray objectAtIndex:indexPath.row];
         NSString *artistName = artist.name;
         cellView.textLabel.text = [NSString stringWithFormat:@"%@", artistName];
     }
-    
+    [cellView.textLabel setTextColor:[UIColor whiteColor]];
+    [cellView setBackgroundColor:[UIColor clearColor]];
     return cellView;
-    
-    /*
-    static NSString *cellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-    }
-    SAArtist *artist = nil;
-    artist = [artistArray objectAtIndex:indexPath.row];
-    cell.textLabel.text = artist.name;
-    [cell setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
-    return cell;
-     */
 }
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    //segue to artist details
+    
+    [self performSegueWithIdentifier:@"artistDetail" sender:self.tableView];
+}
+
+/*
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
 
 /*
 // Override to support editing the table view.
@@ -141,6 +130,23 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    if ([[segue identifier] isEqualToString:@"artistDetail"]) {
+        ArtistViewController *artistViewController = [segue destinationViewController];
+        
+        if (sender == self.searchDisplayController.searchResultsTableView) {
+            NSIndexPath *indexPath = [self.searchDisplayController.searchResultsTableView indexPathForSelectedRow];
+            //NSString *destinationTitle = [[artistArray objectAtIndex:[indexPath row]] name];
+            //[artistViewController setTitle:destinationTitle];
+            artistViewController.artist = [artistArray objectAtIndex:[indexPath row]];
+            NSLog(@"artist passed was %@", artistViewController.artist.name);
+        } else {
+            NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+            //NSString *destinationTitle = [[artistArray objectAtIndex:[indexPath row]] name];
+            //[artistViewController setTitle:destinationTitle];
+            artistViewController.artist = [artistArray objectAtIndex:[indexPath row]];
+            NSLog(@"artist passed was %@", artistViewController.artist.name);
+        }
+    }
 }
 
 

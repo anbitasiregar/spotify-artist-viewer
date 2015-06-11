@@ -31,8 +31,9 @@
     [urlString appendString:@"https://api.spotify.com/v1/search?q="];
     [urlString appendString:query];
     [urlString appendString:@"&type=artist"];
+    NSString *encodedURL = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-    NSURL *url = [NSURL URLWithString:urlString];
+    NSURL *url = [NSURL URLWithString:encodedURL];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     [request setURL:url];
     [request setHTTPMethod:@"GET"];
@@ -52,10 +53,16 @@
                             
                             for (NSObject *artist in jSonArtists) {
                                 NSString *artistName = [artist valueForKey:@"name"];
-                                NSString *imageURL = @"url";
-                                NSString *bio = @"bio";
-                                
-                                [artists addObject:[SAArtist artistOfName:artistName bio:bio url:imageURL]];
+                                NSArray *image = [artist valueForKey:@"images"];
+                                NSString *uri = [artist valueForKey:@"uri"];
+                                /*
+                                [[SARequestManager sharedManager] getBio:uri success:^(NSString *bio) {
+                                    NSString *newBio = bio;
+                                } failure:^(NSError *error) {
+                                    failure(error);
+                                }];
+                                 */
+                                [artists addObject:[SAArtist artistOfName:artistName bio:@"bio" image:image uri:uri]];
                             }
                             
                             NSLog(@"artists: %@", artists);
@@ -65,5 +72,47 @@
                         }
                     }];
 }
+
+- (void) getBioWithArtist:(NSString *)uri success:(void (^)(NSString *bio))success failure:(void (^)(NSError *error))failure {
+    
+    NSMutableString *urlString = [[NSMutableString alloc] init];
+    [urlString appendString:@"http://developer.echonest.com/api/v4/artist/biographies?api_key=FILDTEOIK2HBORODV&id="];
+    [urlString appendString:uri];
+    NSString *encodedURL = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    NSURL *url = [NSURL URLWithString:encodedURL];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setURL:url];
+    [request setHTTPMethod:@"GET"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+     {
+         if ([data length] && !error) {
+             NSError *jsonErr;
+             NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonErr];
+             
+             //NSArray *alt = json[@"artists"][@"items"];
+             NSArray *jSonBios = [json valueForKeyPath:@"response.biographies"];
+             
+             NSString *newBio = @"No bio found!";
+             for (NSDictionary *bio in jSonBios) {
+                 if (![bio valueForKey:@"truncated"]) {
+                     newBio = [bio valueForKey:@"text"];
+                     NSLog(@"newBio: %@", newBio);
+                     break;
+                 }
+             }
+             success(newBio);
+         } else {
+             failure(error);
+         }
+     }];
+
+    
+    
+}
+
 
 @end

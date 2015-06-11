@@ -15,4 +15,8 @@
                     success:(void (^)(NSArray *artists))success
                     failure:(void (^)(NSError *error))failure;
 
+- (void) getBioWithArtist:(NSString *)uri
+                  success:(void (^)(NSString *bio))success
+                  failure:(void (^)(NSError *error))error;
+
 @end

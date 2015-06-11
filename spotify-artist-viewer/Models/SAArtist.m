@@ -9,12 +9,15 @@
 
 @implementation SAArtist
 
-+ (SAArtist *) artistOfName: (NSString *) name bio: (NSString *) bio url: (NSString *) url {
++ (SAArtist *) artistOfName: (NSString *) name bio: (NSString *) bio image: (NSArray *) image uri:(NSString *)number {
     SAArtist *artist = [[self alloc] init];
     artist.name = name;
     artist.bio = bio;
-    artist.imageURL = url;
+    artist.image = image;
+    artist.uri = number;
     return artist;
 }
 
 @end
+
+//API key: QOTTQXCRUR2RFYVQQ
