@@ -14,6 +14,8 @@
 @interface ResultsTableViewController ()
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) NSArray *artistArray;
+@property (strong, nonatomic) NSArray *songArray;
+@property (strong, nonatomic) NSArray *albumArray;
 @property (strong, nonatomic) IBOutlet UITableView *resultsTable;
 
 @end
@@ -21,6 +23,8 @@
 @implementation ResultsTableViewController
 
 @synthesize artistArray;
+@synthesize songArray;
+@synthesize albumArray;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -44,7 +48,6 @@
 - (void) handleSearch: (UISearchBar *) searchBar {
     NSLog(@"User searched for %@", searchBar.text);
     NSString *queryString = searchBar.text;
-    //[searchBar resignFirstResponder];
     
     [[SARequestManager sharedManager] getArtistsWithQuery:queryString success:^(NSArray *artists) {
             artistArray = artists;
@@ -59,11 +62,11 @@
 #pragma mark - Table view data source
 
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 1; //album, song, and artist
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [artistArray count];
+    return ([artistArray count] + [songArray count] + [albumArray count]);
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
