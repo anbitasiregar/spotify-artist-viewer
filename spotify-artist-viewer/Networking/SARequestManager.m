@@ -6,7 +6,7 @@
 //
 
 #import "SARequestManager.h"
-#import "SAArtist.h"
+#import "SAItem.h"
 
 @implementation SARequestManager
 
@@ -24,70 +24,54 @@
     return shared;
 }
 
-- (void)getArtistsWithQuery:(NSString *)query
-                    success:(void (^)(NSArray *artists))success
-                    failure:(void (^)(NSError *error))failure {
+- (NSMutableURLRequest *)getRequestOfURL: (NSString *) url query: (NSString *) query endString: (NSString *) endString {
     NSMutableString *urlString = [[NSMutableString alloc] init];
-    [urlString appendString:@"https://api.spotify.com/v1/search?q="];
+    [urlString appendString:url];
     [urlString appendString:query];
-    [urlString appendString:@"&type=artist"];
+    [urlString appendString:endString];
     NSString *encodedURL = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-    NSURL *url = [NSURL URLWithString:encodedURL];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setURL:url];
+    NSURL *newURL = [NSURL URLWithString:encodedURL];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:newURL];
+    [request setURL:newURL];
     [request setHTTPMethod:@"GET"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-                    {
-                        if ([data length] && !error) {
-                            NSError *jsonErr;
-                            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonErr];
-                            
-                            //NSArray *alt = json[@"artists"][@"items"];
-                            NSArray *jSonArtists = [json valueForKeyPath:@"artists.items"];
-                            
-                            NSMutableArray *artists = [[NSMutableArray alloc] init];
-                            
-                            for (NSObject *artist in jSonArtists) {
-                                NSString *artistName = [artist valueForKey:@"name"];
-                                NSArray *image = [artist valueForKey:@"images"];
-                                NSString *uri = [artist valueForKey:@"uri"];
-                                /*
-                                [[SARequestManager sharedManager] getBio:uri success:^(NSString *bio) {
-                                    NSString *newBio = bio;
-                                } failure:^(NSError *error) {
-                                    failure(error);
-                                }];
-                                 */
-                                [artists addObject:[SAArtist artistOfName:artistName bio:@"bio" image:image uri:uri]];
-                            }
-                            
-                            NSLog(@"artists: %@", artists);
-                            success(artists);
-                        } else {
-                            failure(error);
-                        }
-                    }];
+    return request;
+    
 }
 
+//- (void)getArtistsWithQuery:(NSString *)query success:(void (^)(NSArray *artists))success failure:(void (^)(NSError *error))failure {
+//    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+//    [NSURLConnection sendAsynchronousRequest:[[SARequestManager sharedManager] getRequestOfURL:@"https://api.spotify.com/v1/search?q=" query:query endString:@"&type=artist"] queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+//                    {
+//                        if ([data length] && !error) {
+//                            NSError *jsonErr;
+//                            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonErr];
+//                            
+//                            //NSArray *alt = json[@"artists"][@"items"];
+//                            NSArray *jSonArtists = [json valueForKeyPath:@"artists.items"];
+//                            
+//                            NSMutableArray *artists = [[NSMutableArray alloc] init];
+//                            
+//                            for (NSObject *artist in jSonArtists) {
+//                                NSString *artistName = [artist valueForKey:@"name"];
+//                                NSArray *image = [artist valueForKey:@"images"];
+//                                NSString *uri = [artist valueForKey:@"uri"];
+//                                [artists addObject:[SAArtist artistOfName:artistName bio:@"bio" image:image uri:uri]];
+//                            }
+//                            
+//                            NSLog(@"artists: %@", artists);
+//                            success(artists);
+//                        } else {
+//                            failure(error);
+//                        }
+//                    }];
+//}
+
 - (void) getBioWithArtist:(NSString *)uri success:(void (^)(NSString *bio))success failure:(void (^)(NSError *error))failure {
-    
-    NSMutableString *urlString = [[NSMutableString alloc] init];
-    [urlString appendString:@"http://developer.echonest.com/api/v4/artist/biographies?api_key=FILDTEOIK2HBORODV&id="];
-    [urlString appendString:uri];
-    NSString *encodedURL = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
-    NSURL *url = [NSURL URLWithString:encodedURL];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setURL:url];
-    [request setHTTPMethod:@"GET"];
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+    [NSURLConnection sendAsynchronousRequest:[[SARequestManager sharedManager] getRequestOfURL:@"http://developer.echonest.com/api/v4/artist/biographies?api_key=FILDTEOIK2HBORODV&id=" query:uri endString:@""] queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
      {
          if ([data length] && !error) {
              NSError *jsonErr;
@@ -109,9 +93,46 @@
              failure(error);
          }
      }];
+}
 
-    
-    
+- (void) getAllWithQuery:(NSString *)query success:(void (^)(NSDictionary *items))success failure:(void (^)(NSError *error))failure {
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    [NSURLConnection sendAsynchronousRequest:[[SARequestManager sharedManager] getRequestOfURL:@"https://api.spotify.com/v1/search?q=" query:query endString:@"&type=track,album,artist"] queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+     {
+         if ([data length] && !error) {
+             NSError *jsonErr;
+             NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonErr];
+             
+             //NSArray *alt = json[@"artists"][@"items"];
+             NSArray *jSonArtists = [json valueForKeyPath:@"artists.items"];
+             NSArray *jSonSongs = [json valueForKey:@"songs.items"];
+             NSArray *jSonAlbums = [json valueForKey:@"albums.items"];
+             
+             NSMutableArray *artists = [[NSMutableArray alloc] init];
+             artists = [[SARequestManager sharedManager] addItemsFromArray:jSonArtists toNewArray:artists];
+             NSMutableArray *songs = [[NSMutableArray alloc] init];
+             songs = [[SARequestManager sharedManager] addItemsFromArray:jSonSongs toNewArray:songs];
+             NSMutableArray *albums = [[NSMutableArray alloc] init];
+             albums = [[SARequestManager sharedManager] addItemsFromArray:jSonAlbums toNewArray:albums];
+             
+             NSLog(@"artists: %@", artists);
+             NSLog(@"songs: %@", songs);
+             NSLog(@"albums: %@", albums);
+             success(@{@"Artists": artists, @"Songs": songs, @"Albums" : albums});
+         } else {
+             failure(error);
+         }
+     }];
+}
+
+-(NSMutableArray *) addItemsFromArray: (NSArray *) jsonArray toNewArray: (NSMutableArray *) newArray {
+    for (NSObject *item in jsonArray) {
+        NSString *name = [item valueForKey:@"name"];
+        NSArray *image = [item valueForKey:@"images"];
+        NSString *uri = [item valueForKey:@"uri"];
+        [newArray addObject:[SAItem itemOfName:name bio:@"bio" image:image uri:uri]];
+    }
+    return newArray;
 }
 
 

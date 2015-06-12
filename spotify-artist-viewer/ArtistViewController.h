@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-@class SAArtist;
+@class SAItem;
 
 @interface ArtistViewController : UIViewController
 
-@property (strong, nonatomic) SAArtist *artist;
+@property (strong, nonatomic) SAItem *item;
 
 @end

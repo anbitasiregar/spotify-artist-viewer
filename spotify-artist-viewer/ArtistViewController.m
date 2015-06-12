@@ -8,12 +8,12 @@
 
 #import "ArtistViewController.h"
 #import "SARequestManager.h"
-#import "SAArtist.h"
+#import "SAItem.h"
 
 @interface ArtistViewController ()
-@property (weak, nonatomic) IBOutlet UITextView *artistBio;
-@property (weak, nonatomic) IBOutlet UIImageView *artistImage;
-@property (weak, nonatomic) IBOutlet UILabel *artistName;
+@property (weak, nonatomic) IBOutlet UITextView *itemBio;
+@property (weak, nonatomic) IBOutlet UIImageView *itemImage;
+@property (weak, nonatomic) IBOutlet UILabel *itemName;
 @end
 
 
@@ -24,25 +24,25 @@
     [super viewDidLoad];
     
     //setting image to a circle
-    self.artistImage.layer.cornerRadius = 90;
-    self.artistImage.layer.masksToBounds = YES;
+    self.itemImage.layer.cornerRadius = 90;
+    self.itemImage.layer.masksToBounds = YES;
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    self.artistName.text = self.artist.name;
-    [[SARequestManager sharedManager] getBioWithArtist:self.artist.uri success:^(NSString *bio) {
+    self.itemName.text = self.item.name;
+    [[SARequestManager sharedManager] getBioWithArtist:self.item.uri success:^(NSString *bio) {
         NSLog(@"returned: %@", bio);
         dispatch_async(dispatch_get_main_queue(), ^{
-            self.artistBio.text = bio;
-            [self.artistBio setTextColor:[UIColor whiteColor]];
+            self.itemBio.text = bio;
+            [self.itemBio setTextColor:[UIColor whiteColor]];
         });
     } failure:^(NSError *error) {
         NSLog(@"Error: %@", error);
     }];
     
-    NSString *url= self.artist.image[0][@"url"];
+    NSString *url= self.item.image[0][@"url"];
     NSLog(@"url: %@", url);
     UIImage *image = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:url]]];
-    [self.artistImage setImage:image];
+    [self.itemImage setImage:image];
 }
 
 - (void)didReceiveMemoryWarning {

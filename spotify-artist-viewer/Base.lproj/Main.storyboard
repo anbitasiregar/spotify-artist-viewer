@@ -40,7 +40,7 @@
                     <connections>
                         <outlet property="resultsTable" destination="LwG-ED-N6P" id="NTJ-mS-PfU"/>
                         <outlet property="searchBar" destination="ENW-p9-mjr" id="BxZ-hh-58L"/>
-                        <segue destination="fd2-sS-Fbd" kind="push" identifier="artistDetail" id="VpJ-uw-hu5"/>
+                        <segue destination="fd2-sS-Fbd" kind="push" identifier="itemDetail" id="VpJ-uw-hu5"/>
                     </connections>
                 </tableViewController>
             </objects>
@@ -97,7 +97,7 @@
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Oy-5f-ttG">
                                 <rect key="frame" x="16" y="20" width="60" height="30"/>
-                                <color key="backgroundColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.20000000298023224" green="0.20000000298023224" blue="0.20000000298023224" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="60" id="FCa-Ey-jh0"/>
                                     <constraint firstAttribute="width" constant="60" id="jOg-he-sCz"/>

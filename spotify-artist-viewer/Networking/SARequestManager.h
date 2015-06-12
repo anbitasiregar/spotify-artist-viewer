@@ -19,4 +19,8 @@
                   success:(void (^)(NSString *bio))success
                   failure:(void (^)(NSError *error))error;
 
+- (void) getAllWithQuery:(NSString *)query
+                 success:(void (^)(NSDictionary *items))success
+                 failure:(void (^)(NSError *error))failure;
+
 @end

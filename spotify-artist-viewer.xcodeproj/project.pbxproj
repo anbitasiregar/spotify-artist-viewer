@@ -15,6 +15,7 @@
 		2E7674471B26766200336867 /* spotify_artist_viewerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E7674461B26766200336867 /* spotify_artist_viewerTests.m */; };
 		2E7674541B2676F400336867 /* SAArtist.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E7674531B2676F400336867 /* SAArtist.m */; };
 		2E7674571B26772600336867 /* SARequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E7674561B26772600336867 /* SARequestManager.m */; };
+		CC24D0631B2B18B700180E32 /* SAItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CC24D0621B2B18B700180E32 /* SAItem.m */; };
 		CCEAFD3A1B27671D002EFB44 /* ArtistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEAFD391B27671D002EFB44 /* ArtistViewController.m */; };
 		CCEAFD3D1B27677E002EFB44 /* ResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEAFD3C1B27677E002EFB44 /* ResultsTableViewController.m */; };
 /* End PBXBuildFile section */
@@ -45,6 +46,8 @@
 		2E7674531B2676F400336867 /* SAArtist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAArtist.m; path = Models/SAArtist.m; sourceTree = "<group>"; };
 		2E7674551B26772600336867 /* SARequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SARequestManager.h; path = Networking/SARequestManager.h; sourceTree = "<group>"; };
 		2E7674561B26772600336867 /* SARequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SARequestManager.m; path = Networking/SARequestManager.m; sourceTree = "<group>"; };
+		CC24D0611B2B18B700180E32 /* SAItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAItem.h; path = Models/SAItem.h; sourceTree = "<group>"; };
+		CC24D0621B2B18B700180E32 /* SAItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAItem.m; path = Models/SAItem.m; sourceTree = "<group>"; };
 		CCEAFD381B27671D002EFB44 /* ArtistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtistViewController.h; sourceTree = "<group>"; };
 		CCEAFD391B27671D002EFB44 /* ArtistViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArtistViewController.m; sourceTree = "<group>"; };
 		CCEAFD3B1B27677E002EFB44 /* ResultsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultsTableViewController.h; sourceTree = "<group>"; };
@@ -137,6 +140,8 @@
 			children = (
 				2E7674521B2676F400336867 /* SAArtist.h */,
 				2E7674531B2676F400336867 /* SAArtist.m */,
+				CC24D0611B2B18B700180E32 /* SAItem.h */,
+				CC24D0621B2B18B700180E32 /* SAItem.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -250,6 +255,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC24D0631B2B18B700180E32 /* SAItem.m in Sources */,
 				2E7674541B2676F400336867 /* SAArtist.m in Sources */,
 				CCEAFD3D1B27677E002EFB44 /* ResultsTableViewController.m in Sources */,
 				CCEAFD3A1B27671D002EFB44 /* ArtistViewController.m in Sources */,
