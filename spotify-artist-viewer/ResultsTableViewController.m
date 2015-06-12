@@ -24,11 +24,6 @@
 
 @implementation ResultsTableViewController
 
-//@synthesize artistArray;
-//@synthesize songArray;
-//@synthesize albumArray;
-//@synthesize itemsDict;
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.searchBar setBackgroundColor:[UIColor blackColor]];
@@ -54,7 +49,7 @@
     
     [[SARequestManager sharedManager] getAllWithQuery:queryString success:^(NSDictionary *items) {
         self.itemsDict = items;
-        self.itemSectionTitles = [[self.itemsDict allKeys] sortedArrayUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        self.itemSectionTitles = [self.itemsDict allKeys];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
@@ -83,27 +78,18 @@
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     NSString *TableViewCellIdentifier = @"ArtistCells";
-    UITableViewCell *cellView = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1
                                                        reuseIdentifier:TableViewCellIdentifier];
-    
-    //UITableViewCell *cell = [self.resultsTable dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
     NSString *sectionTitle = [self.itemSectionTitles objectAtIndex:indexPath.section];
     NSArray *sectionItems = [self.itemsDict objectForKey:sectionTitle];
     SAItem *item = [sectionItems objectAtIndex:indexPath.row];
     cell.textLabel.text = item.name;
     
+    [cell.textLabel setTextColor:[UIColor whiteColor]];
+    [cell setBackgroundColor:[UIColor blackColor]];
+    
     return cell;
-    
-    
-//    if (self.artistArray.count > 0) {
-//        SAItem *artist = [self.artistArray objectAtIndex:indexPath.row];
-//        NSString *artistName = artist.name;
-//        cellView.textLabel.text = [NSString stringWithFormat:@"%@", artistName];
-//    }
-//    [cellView.textLabel setTextColor:[UIColor whiteColor]];
-//    [cellView setBackgroundColor:[UIColor clearColor]];
-//    return cellView;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
