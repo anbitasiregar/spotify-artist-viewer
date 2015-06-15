@@ -11,10 +11,6 @@
 
 + (instancetype)sharedManager;
 
-- (void)getArtistsWithQuery:(NSString *)query
-                    success:(void (^)(NSArray *artists))success
-                    failure:(void (^)(NSError *error))failure;
-
 - (void) getBioWithArtist:(NSString *)uri
                   success:(void (^)(NSString *bio))success
                   failure:(void (^)(NSError *error))error;
@@ -22,5 +18,9 @@
 - (void) getAllWithQuery:(NSString *)query
                  success:(void (^)(NSDictionary *items))success
                  failure:(void (^)(NSError *error))failure;
+
+- (void) getSonglistWithAlbum:(NSString *)uri
+                      success:(void (^)(NSString *bio))success
+                      failure:(void (^)(NSError *error))failure;
 
 @end

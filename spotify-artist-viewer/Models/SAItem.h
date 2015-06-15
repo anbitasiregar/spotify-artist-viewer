@@ -10,11 +10,12 @@
 
 @interface SAItem : NSObject
 
+@property (nonatomic) NSString *type;
 @property (nonatomic) NSString *name;
 @property (nonatomic) NSString *bio;
 @property (nonatomic) NSArray *image;
 @property (nonatomic) NSString *uri;
 
-+ (SAItem *) itemOfName: (NSString *) name bio: (NSString *) bio image: (NSArray *) image uri: (NSString *) number;
++ (SAItem *) itemOfType:(NSString *)type name:(NSString *)name bio:(NSString *)bio image:(NSArray *)image uri:(NSString *)number;
 
 @end

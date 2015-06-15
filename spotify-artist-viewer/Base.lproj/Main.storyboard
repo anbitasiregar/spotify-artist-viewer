@@ -8,11 +8,11 @@
         <!--Spotify Artist Search-->
         <scene sceneID="o7l-zY-wKB">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4mg-1R-yCo" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="9cq-uQ-p6L" customClass="ResultsTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LwG-ED-N6P">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="sectionIndexBackgroundColor" red="0.20000000300000001" green="0.20000000300000001" blue="0.20000000300000001" alpha="1" colorSpace="calibratedRGB"/>
                         <searchBar key="tableHeaderView" contentMode="redraw" id="ENW-p9-mjr">
                             <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -43,13 +43,13 @@
                         <segue destination="fd2-sS-Fbd" kind="push" identifier="itemDetail" id="VpJ-uw-hu5"/>
                     </connections>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4mg-1R-yCo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1302" y="250"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="zzk-J7-7z9">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Kog-yv-f6B" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController navigationBarHidden="YES" id="DeI-8v-XEd" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="f6J-mv-cjk">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -59,6 +59,7 @@
                         <segue destination="9cq-uQ-p6L" kind="relationship" relationship="rootViewController" id="SZt-7g-dB7"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Kog-yv-f6B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="482" y="250"/>
         </scene>
@@ -116,12 +117,12 @@
                                     </mask>
                                 </variation>
                                 <connections>
-                                    <segue destination="9cq-uQ-p6L" kind="push" id="n7i-WK-jJM"/>
+                                    <action selector="backButtonWasPressed:" destination="fd2-sS-Fbd" eventType="touchUpInside" id="Rgi-28-WPe"/>
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="500" verticalHuggingPriority="500" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rzf-rj-9gd">
                                 <rect key="frame" x="16" y="280" width="568" height="300"/>
-                                <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -224,9 +225,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="Ufg-qc-lyQ"/>
                     <connections>
-                        <outlet property="artistBio" destination="Rzf-rj-9gd" id="u8o-h8-kQ3"/>
-                        <outlet property="artistImage" destination="I2h-bo-iag" id="7Cw-QO-js7"/>
-                        <outlet property="artistName" destination="Ozu-xb-DA1" id="3is-yM-wbB"/>
+                        <outlet property="itemBioTextView" destination="Rzf-rj-9gd" id="6x8-os-zGE"/>
+                        <outlet property="itemImageView" destination="I2h-bo-iag" id="K5s-3u-UMY"/>
+                        <outlet property="itemNameLabel" destination="Ozu-xb-DA1" id="l5Z-aV-6Af"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mtw-c1-aYX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -234,7 +235,4 @@
             <point key="canvasLocation" x="2018" y="250"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="n7i-WK-jJM"/>
-    </inferredMetricsTieBreakers>
 </document>

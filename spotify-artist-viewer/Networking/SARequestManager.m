@@ -24,7 +24,7 @@
     return shared;
 }
 
-- (NSMutableURLRequest *)getRequestOfURL: (NSString *) url query: (NSString *) query endString: (NSString *) endString {
+- (NSMutableURLRequest *) getRequestOfURL:(NSString *)url query:(NSString *)query endString:(NSString *)endString {
     NSMutableString *urlString = [[NSMutableString alloc] init];
     [urlString appendString:url];
     [urlString appendString:query];
@@ -38,50 +38,22 @@
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     
     return request;
-    
 }
-
-//- (void)getArtistsWithQuery:(NSString *)query success:(void (^)(NSArray *artists))success failure:(void (^)(NSError *error))failure {
-//    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-//    [NSURLConnection sendAsynchronousRequest:[[SARequestManager sharedManager] getRequestOfURL:@"https://api.spotify.com/v1/search?q=" query:query endString:@"&type=artist"] queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-//                    {
-//                        if ([data length] && !error) {
-//                            NSError *jsonErr;
-//                            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonErr];
-//                            
-//                            //NSArray *alt = json[@"artists"][@"items"];
-//                            NSArray *jSonArtists = [json valueForKeyPath:@"artists.items"];
-//                            
-//                            NSMutableArray *artists = [[NSMutableArray alloc] init];
-//                            
-//                            for (NSObject *artist in jSonArtists) {
-//                                NSString *artistName = [artist valueForKey:@"name"];
-//                                NSArray *image = [artist valueForKey:@"images"];
-//                                NSString *uri = [artist valueForKey:@"uri"];
-//                                [artists addObject:[SAArtist artistOfName:artistName bio:@"bio" image:image uri:uri]];
-//                            }
-//                            
-//                            NSLog(@"artists: %@", artists);
-//                            success(artists);
-//                        } else {
-//                            failure(error);
-//                        }
-//                    }];
-//}
 
 - (void) getBioWithArtist:(NSString *)uri success:(void (^)(NSString *bio))success failure:(void (^)(NSError *error))failure {
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    [NSURLConnection sendAsynchronousRequest:[[SARequestManager sharedManager] getRequestOfURL:@"http://developer.echonest.com/api/v4/artist/biographies?api_key=FILDTEOIK2HBORODV&id=" query:uri endString:@""] queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+    [NSURLConnection sendAsynchronousRequest:[[SARequestManager sharedManager] getRequestOfURL:@"http://developer.echonest.com/api/v4/artist/biographies?api_key=QOTTQXCRUR2RFYVQQ&id=spotify:artist:" query:uri endString:@""] queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
      {
          if ([data length] && !error) {
              NSError *jsonErr;
              NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonErr];
              
              //NSArray *alt = json[@"artists"][@"items"];
-             NSArray *jSonBios = [json valueForKeyPath:@"response.biographies"];
+             NSArray *jsonBios = [json valueForKeyPath:@"response.biographies"];
+             NSLog(@"all bios: %@", jsonBios);
              
              NSString *newBio = @"No bio found!";
-             for (NSDictionary *bio in jSonBios) {
+             for (NSDictionary *bio in jsonBios) {
                  if (![bio valueForKey:@"truncated"]) {
                      newBio = [bio valueForKey:@"text"];
                      NSLog(@"newBio: %@", newBio);
@@ -89,6 +61,31 @@
                  }
              }
              success(newBio);
+         } else {
+             failure(error);
+         }
+     }];
+}
+
+- (void) getSonglistWithAlbum:(NSString *)uri success:(void (^)(NSString *bio))success failure:(void (^)(NSError *error))failure {
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    [NSURLConnection sendAsynchronousRequest:[[SARequestManager sharedManager] getRequestOfURL:@"https://api.spotify.com/v1/albums/" query:uri endString:@"/tracks"] queue:queue completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+     {
+         if ([data length] && !error) {
+             NSError *jsonErr;
+             NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonErr];
+             
+             //NSArray *alt = json[@"artists"][@"items"];
+             NSArray *jsonSongs = [json valueForKey:@"items"];
+             NSMutableString *bio = [[NSMutableString alloc] init];
+             
+             for (NSDictionary *song in jsonSongs) {
+                 [bio appendString:[NSString stringWithFormat:@"%@: ",[song valueForKey:@"track_number"]]];
+                 [bio appendFormat:@"%@\n", [song valueForKey:@"name"]];
+                 
+             }
+
+             success(bio);
          } else {
              failure(error);
          }
@@ -104,16 +101,16 @@
              NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonErr];
              
              //NSArray *alt = json[@"artists"][@"items"];
-             NSArray *jSonArtists = [json valueForKeyPath:@"artists.items"];
-             NSArray *jSonSongs = [json valueForKey:@"songs.items"];
-             NSArray *jSonAlbums = [json valueForKey:@"albums.items"];
+             NSArray *jsonArtists = [json valueForKeyPath:@"artists.items"];
+             NSArray *jsonSongs = [json valueForKeyPath:@"tracks.items"];
+             NSArray *jsonAlbums = [json valueForKeyPath:@"albums.items"];
              
              NSMutableArray *artists = [[NSMutableArray alloc] init];
-             artists = [[SARequestManager sharedManager] addItemsFromArray:jSonArtists toNewArray:artists];
+             artists = [[SARequestManager sharedManager] addItemsOfType:@"artist" fromArray:jsonArtists toNewArray:artists];
              NSMutableArray *songs = [[NSMutableArray alloc] init];
-             songs = [[SARequestManager sharedManager] addItemsFromArray:jSonSongs toNewArray:songs];
+             songs = [[SARequestManager sharedManager] addItemsOfType:@"song" fromArray:jsonSongs toNewArray:songs];
              NSMutableArray *albums = [[NSMutableArray alloc] init];
-             albums = [[SARequestManager sharedManager] addItemsFromArray:jSonAlbums toNewArray:albums];
+             albums = [[SARequestManager sharedManager] addItemsOfType:@"album" fromArray:jsonAlbums toNewArray:albums];
              
              NSLog(@"artists: %@", artists);
              NSLog(@"songs: %@", songs);
@@ -125,12 +122,28 @@
      }];
 }
 
--(NSMutableArray *) addItemsFromArray: (NSArray *) jsonArray toNewArray: (NSMutableArray *) newArray {
-    for (NSObject *item in jsonArray) {
-        NSString *name = [item valueForKey:@"name"];
-        NSArray *image = [item valueForKey:@"images"];
-        NSString *uri = [item valueForKey:@"uri"];
-        [newArray addObject:[SAItem itemOfName:name bio:@"bio" image:image uri:uri]];
+- (NSMutableArray *) addItemsOfType:(NSString *)type fromArray:(NSArray *)jsonArray toNewArray:(NSMutableArray *)newArray {
+    if ([type isEqualToString:@"song"]) {
+        newArray = [[SARequestManager sharedManager] addSongFromArray:jsonArray toNewArray:newArray];
+    } else {
+        for (NSObject *item in jsonArray) {
+            NSString *name = [item valueForKey:@"name"];
+            NSArray *image = [item valueForKey:@"images"];
+            NSString *uri = [item valueForKey:@"id"];
+            [newArray addObject:[SAItem itemOfType:type name:name bio:@"bio" image:image uri:uri]];
+        }
+    }
+    return newArray;
+}
+
+- (NSMutableArray *) addSongFromArray:(NSArray *)jsonArray toNewArray:(NSMutableArray *)newArray {
+    for (NSObject *song in jsonArray) {
+        NSString *name = [song valueForKey:@"name"];
+        NSArray *image = [song valueForKeyPath:@"album.images"];
+        NSString *uri = [song valueForKey:@"uri"];
+        NSArray *artistArray = [song valueForKeyPath:@"artists"];
+        NSString *bio = artistArray[0][@"name"];
+        [newArray addObject:[SAItem itemOfType:@"song" name:name bio:bio image:image uri:uri]];
     }
     return newArray;
 }
