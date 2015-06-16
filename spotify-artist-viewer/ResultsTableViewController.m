@@ -13,10 +13,7 @@
 
 @interface ResultsTableViewController ()
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
-//@property (strong, nonatomic) NSArray *artistArray;
-//@property (strong, nonatomic) NSArray *songArray;
-//@property (strong, nonatomic) NSArray *albumArray;
-@property (strong, nonatomic) IBOutlet UITableView *resultsTable;
+@property (strong, nonatomic) IBOutlet UITableView *resultsTableView;
 @property (strong, nonatomic) NSDictionary *itemsDict;
 @property (strong, nonatomic) NSArray *itemSectionTitles;
 
@@ -27,9 +24,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.searchBar setBackgroundColor:[UIColor blackColor]];
+//    self.edgesForExtendedLayout = UIRectEdgeNone;
 }
 
-#pragma mark - search bar methods
+#pragma mark - UISearchBar delegates
 
 -(void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
     [self handleSearch:searchBar];
@@ -44,7 +42,7 @@
 }
 
 - (void) handleSearch: (UISearchBar *) searchBar {
-    NSLog(@"User searched for %@", searchBar.text);
+    //NSLog(@"User searched for %@", searchBar.text);
     NSString *queryString = searchBar.text;
     
     [[SARequestManager sharedManager] getAllWithQuery:queryString success:^(NSDictionary *items) {
@@ -62,17 +60,17 @@
 #pragma mark - Table view data source
 
 -(NSInteger) numberOfSectionsInTableView:(UITableView *)tableView {
-    return [self.itemSectionTitles count];
+    return self.itemSectionTitles.count;
 }
 
 -(NSString *) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return [self.itemSectionTitles objectAtIndex:section];
+    return self.itemSectionTitles[section];
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSString *sectionTitle = [self.itemSectionTitles objectAtIndex:section];
-    NSArray *sectionItems = [self.itemsDict objectForKey:sectionTitle];
-    return [sectionItems count];
+    NSString *sectionTitle = self.itemSectionTitles[section];
+    NSArray *sectionItems = self.itemsDict[sectionTitle];
+    return sectionItems.count;
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -95,6 +93,10 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     //segue to artist details
     [self performSegueWithIdentifier:@"itemDetail" sender:self.tableView];
+}
+
+- (void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self.resultsTableView endEditing:YES];
 }
 
 /*
@@ -139,11 +141,11 @@
     if ([[segue identifier] isEqualToString:@"itemDetail"]) {
         ArtistViewController *artistViewController = [segue destinationViewController];
         
-        NSIndexPath *indexPath = [self.resultsTable indexPathForSelectedRow];
+        NSIndexPath *indexPath = [self.resultsTableView indexPathForSelectedRow];
         NSString *sectionTitle = [self.itemSectionTitles objectAtIndex:indexPath.section];
         NSArray *sectionItems = [self.itemsDict objectForKey:sectionTitle];
         artistViewController.item = [sectionItems objectAtIndex:indexPath.row];
-        NSLog(@"artist passed was %@", artistViewController.item.name);
+        //NSLog(@"artist passed was %@", artistViewController.item.name);
     }
 }
 

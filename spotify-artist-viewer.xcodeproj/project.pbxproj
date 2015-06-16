@@ -16,6 +16,7 @@
 		2E7674541B2676F400336867 /* SAArtist.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E7674531B2676F400336867 /* SAArtist.m */; };
 		2E7674571B26772600336867 /* SARequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E7674561B26772600336867 /* SARequestManager.m */; };
 		34731222D035AA053180087E /* libPods-spotify-artist-viewer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AB3E87F382B9F16493AC025A /* libPods-spotify-artist-viewer.a */; };
+		CC23F52B1B2F52EE000A9F47 /* FavoritesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC23F52A1B2F52EE000A9F47 /* FavoritesTableViewController.m */; };
 		CC24D0631B2B18B700180E32 /* SAItem.m in Sources */ = {isa = PBXBuildFile; fileRef = CC24D0621B2B18B700180E32 /* SAItem.m */; };
 		CCEAFD3A1B27671D002EFB44 /* ArtistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEAFD391B27671D002EFB44 /* ArtistViewController.m */; };
 		CCEAFD3D1B27677E002EFB44 /* ResultsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEAFD3C1B27677E002EFB44 /* ResultsTableViewController.m */; };
@@ -50,6 +51,8 @@
 		92AC6ABED2BD9362C81FD2FC /* Pods-spotify-artist-viewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spotify-artist-viewer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-spotify-artist-viewer/Pods-spotify-artist-viewer.debug.xcconfig"; sourceTree = "<group>"; };
 		A2F3FE270372C510A44FB51B /* Pods-spotify-artist-viewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spotify-artist-viewer.release.xcconfig"; path = "Pods/Target Support Files/Pods-spotify-artist-viewer/Pods-spotify-artist-viewer.release.xcconfig"; sourceTree = "<group>"; };
 		AB3E87F382B9F16493AC025A /* libPods-spotify-artist-viewer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-spotify-artist-viewer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC23F5291B2F52EE000A9F47 /* FavoritesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritesTableViewController.h; sourceTree = "<group>"; };
+		CC23F52A1B2F52EE000A9F47 /* FavoritesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritesTableViewController.m; sourceTree = "<group>"; };
 		CC24D0611B2B18B700180E32 /* SAItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAItem.h; path = Models/SAItem.h; sourceTree = "<group>"; };
 		CC24D0621B2B18B700180E32 /* SAItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAItem.m; path = Models/SAItem.m; sourceTree = "<group>"; };
 		CCEAFD381B27671D002EFB44 /* ArtistViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtistViewController.h; sourceTree = "<group>"; };
@@ -108,6 +111,8 @@
 				CCEAFD3C1B27677E002EFB44 /* ResultsTableViewController.m */,
 				CCEAFD381B27671D002EFB44 /* ArtistViewController.h */,
 				CCEAFD391B27671D002EFB44 /* ArtistViewController.m */,
+				CC23F5291B2F52EE000A9F47 /* FavoritesTableViewController.h */,
+				CC23F52A1B2F52EE000A9F47 /* FavoritesTableViewController.m */,
 				2E7674341B26766200336867 /* Main.storyboard */,
 				2E7674371B26766200336867 /* Images.xcassets */,
 				2E7674391B26766200336867 /* LaunchScreen.xib */,
@@ -230,6 +235,7 @@
 				TargetAttributes = {
 					2E7674261B26766200336867 = {
 						CreatedOnToolsVersion = 6.3.1;
+						DevelopmentTeam = THP5EV5EJ9;
 					};
 					2E76743F1B26766200336867 = {
 						CreatedOnToolsVersion = 6.3.1;
@@ -317,6 +323,7 @@
 				CC24D0631B2B18B700180E32 /* SAItem.m in Sources */,
 				2E7674541B2676F400336867 /* SAArtist.m in Sources */,
 				CCEAFD3D1B27677E002EFB44 /* ResultsTableViewController.m in Sources */,
+				CC23F52B1B2F52EE000A9F47 /* FavoritesTableViewController.m in Sources */,
 				CCEAFD3A1B27671D002EFB44 /* ArtistViewController.m in Sources */,
 				2E7674301B26766200336867 /* AppDelegate.m in Sources */,
 				2E76742D1B26766200336867 /* main.m in Sources */,
@@ -449,9 +456,13 @@
 			baseConfigurationReference = 92AC6ABED2BD9362C81FD2FC /* Pods-spotify-artist-viewer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "spotify-artist-viewer/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -460,9 +471,13 @@
 			baseConfigurationReference = A2F3FE270372C510A44FB51B /* Pods-spotify-artist-viewer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "spotify-artist-viewer/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

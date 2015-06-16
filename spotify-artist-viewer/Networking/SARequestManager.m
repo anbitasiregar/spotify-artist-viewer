@@ -50,13 +50,13 @@
              
              //NSArray *alt = json[@"artists"][@"items"];
              NSArray *jsonBios = [json valueForKeyPath:@"response.biographies"];
-             NSLog(@"all bios: %@", jsonBios);
+             //NSLog(@"all bios: %@", jsonBios);
              
              NSString *newBio = @"No bio found!";
              for (NSDictionary *bio in jsonBios) {
                  if (![bio valueForKey:@"truncated"]) {
                      newBio = [bio valueForKey:@"text"];
-                     NSLog(@"newBio: %@", newBio);
+                     //NSLog(@"newBio: %@", newBio);
                      break;
                  }
              }
@@ -112,9 +112,9 @@
              NSMutableArray *albums = [[NSMutableArray alloc] init];
              albums = [[SARequestManager sharedManager] addItemsOfType:@"album" fromArray:jsonAlbums toNewArray:albums];
              
-             NSLog(@"artists: %@", artists);
-             NSLog(@"songs: %@", songs);
-             NSLog(@"albums: %@", albums);
+             //NSLog(@"artists: %@", artists);
+             //NSLog(@"songs: %@", songs);
+             //NSLog(@"albums: %@", albums);
              success(@{@"Artists": artists, @"Songs": songs, @"Albums" : albums});
          } else {
              failure(error);

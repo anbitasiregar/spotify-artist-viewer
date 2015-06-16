@@ -12,7 +12,7 @@
 
 + (SAItem *) itemOfType:(NSString *)type name:(NSString *)name bio:(NSString *)bio image:(NSArray *)image uri:(NSString *)number {
     SAItem *item = [[self alloc] init];
-    item.type = type;
+    item.type = type; //artist, album, song
     item.name = name;
     item.bio = bio;
     item.image = image;
